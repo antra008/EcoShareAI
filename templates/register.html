@@ -1,0 +1,226 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | EcoShare AI</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 25px 15px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #e5f5e9, #f7fbf7);
+            color: #26382b;
+        }
+
+        .register-card {
+            background: white;
+            width: 100%;
+            max-width: 460px;
+            padding: 32px;
+            border-radius: 18px;
+            box-shadow: 0 10px 35px #174b2815;
+        }
+
+        .logo {
+            text-align: center;
+            color: #238447;
+            font-size: 27px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 25px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #718075;
+            font-size: 14px;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        label {
+            display: block;
+            margin: 15px 0 7px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d7e3d9;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+            background: white;
+        }
+
+        input:focus, select:focus {
+            border-color: #238447;
+            box-shadow: 0 0 0 3px #23844715;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 23px;
+            padding: 13px;
+            border: none;
+            border-radius: 8px;
+            background: #238447;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #176b3c;
+        }
+
+        .message {
+            padding: 11px;
+            margin: 10px 0;
+            border-radius: 7px;
+            background: #ffe8e8;
+            color: #a52222;
+            font-size: 14px;
+        }
+
+        .success {
+            background: #e1f5e6;
+            color: #19713a;
+        }
+
+        .links {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .links a {
+            color: #238447;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 14px;
+            color: #657568;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        @media (max-width: 480px) {
+            .register-card {
+                padding: 23px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="register-card">
+
+    <div class="logo">🌱 EcoShare AI</div>
+
+    <h1>Create Account</h1>
+
+    <p class="subtitle">
+        Join us in reducing food waste and sharing surplus food.
+    </p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <div class="message {{ category }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('register') }}">
+
+        <label for="full_name">Full Name</label>
+        <input
+            type="text"
+            id="full_name"
+            name="full_name"
+            placeholder="Enter your full name"
+            autocomplete="name"
+            required
+        >
+
+        <label for="email">Email Address</label>
+        <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Enter your email"
+            autocomplete="email"
+            required
+        >
+
+        <label for="role">Register As</label>
+        <select id="role" name="role" required>
+            <option value="donor">Food Donor</option>
+            <option value="ngo">NGO Representative</option>
+        </select>
+
+        <label for="password">Password</label>
+        <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="At least 8 characters"
+            minlength="8"
+            autocomplete="new-password"
+            required
+        >
+
+        <label for="confirm_password">Confirm Password</label>
+        <input
+            type="password"
+            id="confirm_password"
+            name="confirm_password"
+            placeholder="Enter password again"
+            minlength="8"
+            autocomplete="new-password"
+            required
+        >
+
+        <button type="submit">Create Account</button>
+
+    </form>
+
+    <div class="links">
+        Already have an account?
+        <a href="{{ url_for('login') }}">Login here</a>
+    </div>
+
+    <a class="back-link" href="{{ url_for('home') }}">
+        ← Back to Home
+    </a>
+
+</div>
+
+</body>
+</html>

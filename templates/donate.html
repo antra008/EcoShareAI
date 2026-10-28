@@ -1,0 +1,164 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donate Food | EcoShare AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        .donate-container {
+            max-width: 600px;
+            margin: 35px auto;
+            padding: 28px;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 5px 22px rgba(0, 0, 0, 0.10);
+        }
+
+        .donate-container h1 {
+            text-align: center;
+            color: #218838;
+            margin-bottom: 10px;
+        }
+
+        .donate-container p {
+            text-align: center;
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .donate-form label {
+            display: block;
+            margin: 15px 0 7px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .donate-form input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+            box-sizing: border-box;
+        }
+
+        .donate-form input:focus {
+            outline: none;
+            border-color: #218838;
+        }
+
+        .donate-form button {
+            width: 100%;
+            margin-top: 24px;
+            padding: 13px;
+            background: #218838;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .donate-form button:hover {
+            background: #176b2c;
+        }
+
+        .expiry-note {
+            display: block;
+            margin-top: 6px;
+            color: #666;
+            font-size: 12px;
+        }
+
+        .flash-message {
+            padding: 10px;
+            margin-bottom: 12px;
+            border-radius: 6px;
+            background: #fff3cd;
+            color: #664d03;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="donate-container">
+        <h1>Donate Food 🌱</h1>
+        <p>Share surplus food and help someone in need.</p>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+                <div class="flash-message">{{ message }}</div>
+            {% endfor %}
+        {% endwith %}
+
+        <form class="donate-form" method="POST" action="{{ url_for('donate') }}">
+
+            <label for="food_name">Food Name</label>
+            <input
+                type="text"
+                id="food_name"
+                name="food_name"
+                placeholder="e.g. Rice, Bread, Fruits"
+                required
+            >
+
+            <label for="quantity">Quantity</label>
+            <input
+                type="text"
+                id="quantity"
+                name="quantity"
+                placeholder="e.g. 5 kg or 10 packets"
+                required
+            >
+
+            <label for="location">Pickup Location</label>
+            <input
+                type="text"
+                id="location"
+                name="location"
+                placeholder="Enter pickup location"
+                required
+            >
+
+            <label for="donor_name">Donor Name</label>
+            <input
+                type="text"
+                id="donor_name"
+                name="donor_name"
+                placeholder="Enter donor name"
+                required
+            >
+
+            <label for="contact">Contact Number</label>
+            <input
+                type="tel"
+                id="contact"
+                name="contact"
+                placeholder="Enter contact number"
+                required
+            >
+
+            <label for="expiry_date">Food Expiry Date *</label>
+            <input
+                type="date"
+                id="expiry_date"
+                name="expiry_date"
+                min="{{ today }}"
+                required
+            >
+            <small class="expiry-note">
+                Select the date printed on the food packaging, where applicable.
+            </small>
+
+            <button type="submit">Submit Donation</button>
+
+        </form>
+    </div>
+
+</body>
+</html>

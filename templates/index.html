@@ -1,0 +1,623 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoShare AI | Smart Food Redistribution</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f8f5;
+            color: #24352a;
+            line-height: 1.6;
+        }
+
+        nav {
+            background: #14532d;
+            color: white;
+            padding: 16px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a,
+        .welcome {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .nav-links a:hover {
+            color: #bbf7d0;
+        }
+
+        .nav-button {
+            background: white;
+            color: #14532d !important;
+            padding: 9px 15px;
+            border-radius: 7px;
+        }
+
+        .hero {
+            padding: 70px 7%;
+            background: linear-gradient(135deg, #dcfce7, #f0fdf4);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 35px;
+            flex-wrap: wrap;
+        }
+
+        .hero-content {
+            flex: 1;
+            min-width: 280px;
+        }
+
+        .tag {
+            display: inline-block;
+            background: #bbf7d0;
+            color: #166534;
+            padding: 7px 13px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 18px;
+        }
+
+        .hero h1 {
+            font-size: clamp(32px, 5vw, 51px);
+            line-height: 1.2;
+            margin-bottom: 20px;
+            color: #14532d;
+        }
+
+        .hero p {
+            color: #526456;
+            font-size: 17px;
+            margin-bottom: 25px;
+            max-width: 600px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            border: 2px solid #166534;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: #166534;
+            color: white;
+        }
+
+        .btn-secondary {
+            color: #166534;
+            background: white;
+        }
+
+        .hero-visual {
+            flex: 0.7;
+            min-width: 240px;
+            text-align: center;
+            font-size: 100px;
+            background: #ffffffa8;
+            border-radius: 25px;
+            padding: 35px 20px;
+        }
+
+        .section {
+            padding: 55px 7%;
+        }
+
+        .section-heading {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .section-heading h2 {
+            font-size: 30px;
+            color: #14532d;
+            margin-bottom: 8px;
+        }
+
+        .section-heading p {
+            color: #667568;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+            box-shadow: 0 4px 15px #0000000a;
+            border: 1px solid #e1ece3;
+            text-align: center;
+        }
+
+        .stat-icon {
+            font-size: 30px;
+        }
+
+        .stat-card h3 {
+            font-size: 32px;
+            color: #166534;
+            margin: 7px 0;
+        }
+
+        .stat-card p {
+            color: #667568;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+            border: 1px solid #e1ece3;
+            box-shadow: 0 4px 15px #00000008;
+        }
+
+        .feature-card .icon {
+            font-size: 35px;
+            margin-bottom: 12px;
+        }
+
+        .feature-card h3 {
+            color: #14532d;
+            margin-bottom: 9px;
+        }
+
+        .feature-card p {
+            color: #667568;
+            margin-bottom: 16px;
+        }
+
+        .feature-card a {
+            color: #15803d;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .recent-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 18px;
+        }
+
+        .recent-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #e1ece3;
+        }
+
+        .recent-card h3 {
+            color: #14532d;
+            margin-bottom: 8px;
+        }
+
+        .recent-card p {
+            color: #667568;
+            font-size: 14px;
+        }
+
+        .status {
+            display: inline-block;
+            background: #dcfce7;
+            color: #166534;
+            border-radius: 20px;
+            padding: 4px 10px;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+
+        .empty-state {
+            text-align: center;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            color: #667568;
+            grid-column: 1 / -1;
+        }
+
+        .cta {
+            margin: 10px 7% 55px;
+            padding: 40px 25px;
+            background: #14532d;
+            color: white;
+            border-radius: 18px;
+            text-align: center;
+        }
+
+        .cta h2 {
+            font-size: 29px;
+            margin-bottom: 10px;
+        }
+
+        .cta p {
+            margin-bottom: 22px;
+            color: #dcfce7;
+        }
+
+        footer {
+            background: #102d1b;
+            color: #d1e7d6;
+            text-align: center;
+            padding: 22px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 650px) {
+            nav {
+                padding: 15px 5%;
+            }
+
+            .nav-links {
+                gap: 12px;
+            }
+
+            .hero {
+                padding: 45px 6%;
+            }
+
+            .hero-visual {
+                font-size: 75px;
+            }
+
+            .section {
+                padding: 40px 6%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVIGATION BAR -->
+    <nav>
+        <a class="logo" href="{{ url_for('home') }}">
+            🌱 EcoShare AI
+        </a>
+
+        <div class="nav-links">
+
+            <a href="{{ url_for('home') }}">Home</a>
+
+            {% if session.get('user_id') %}
+
+                {% if session.get('user_role') == 'ngo' %}
+
+                    <a href="{{ url_for('donations') }}">
+                        Available Food
+                    </a>
+
+                    <a href="{{ url_for('smart_matching') }}">
+                        Smart Matching
+                    </a>
+
+                    <a href="{{ url_for('ngo_dashboard') }}">
+                        NGO Dashboard
+                    </a>
+
+                {% else %}
+
+                    <a href="{{ url_for('donate') }}">
+                        Donate Food
+                    </a>
+
+                    <a href="{{ url_for('donations') }}">
+                        Available Food
+                    </a>
+
+                    <a href="{{ url_for('smart_matching') }}">
+                        Smart Matching
+                    </a>
+
+                {% endif %}
+
+                <span class="welcome">
+                    Hi, {{ session.get('user_name', 'User') }}
+                </span>
+
+                <a class="nav-button" href="{{ url_for('logout') }}">
+                    Logout
+                </a>
+
+            {% else %}
+
+                <a href="{{ url_for('donations') }}">
+                    Available Food
+                </a>
+
+                <a href="{{ url_for('smart_matching') }}">
+                    Smart Matching
+                </a>
+
+                <a href="{{ url_for('login') }}">
+                    Login
+                </a>
+
+                <a class="nav-button" href="{{ url_for('register') }}">
+                    Register
+                </a>
+
+            {% endif %}
+
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="hero-content">
+
+            <span class="tag">
+                🌍 Reduce Food Waste, Spread Hope
+            </span>
+
+            <h1>
+                Share Food.<br>
+                Save Lives.<br>
+                Build a Better Future.
+            </h1>
+
+            <p>
+                EcoShare AI connects food donors with NGOs and people in need.
+                Help reduce food waste by redistributing surplus food to
+                those who need it most.
+            </p>
+
+            <div class="buttons">
+
+                {% if session.get('user_id') and session.get('user_role') == 'donor' %}
+
+                    <a class="btn btn-primary"
+                       href="{{ url_for('donate') }}">
+                        Donate Food
+                    </a>
+
+                {% elif not session.get('user_id') %}
+
+                    <a class="btn btn-primary"
+                       href="{{ url_for('register') }}">
+                        Join EcoShare AI
+                    </a>
+
+                {% endif %}
+
+                <a class="btn btn-secondary"
+                   href="{{ url_for('donations') }}">
+                    Explore Donations
+                </a>
+
+            </div>
+        </div>
+
+        <div class="hero-visual">
+            🥗 🌍 💚
+        </div>
+    </section>
+
+    <!-- IMPACT STATISTICS -->
+    <section class="section">
+
+        <div class="section-heading">
+            <h2>Our Impact</h2>
+            <p>Every donation can make a difference.</p>
+        </div>
+
+        <div class="stats">
+
+            <div class="stat-card">
+                <div class="stat-icon">🍱</div>
+                <h3>{{ stats.total }}</h3>
+                <p>Total Donations</p>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">🥗</div>
+                <h3>{{ stats.available }}</h3>
+                <p>Available Food Donations</p>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">🤝</div>
+                <h3>{{ stats.claimed }}</h3>
+                <p>Claimed Donations</p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="section">
+
+        <div class="section-heading">
+            <h2>What You Can Do</h2>
+            <p>Simple steps towards a food-secure community.</p>
+        </div>
+
+        <div class="features">
+
+            {% if session.get('user_id') and session.get('user_role') == 'donor' %}
+                <div class="feature-card">
+                    <div class="icon">🍲</div>
+                    <h3>Donate Food</h3>
+                    <p>List surplus food so it can reach someone who needs it.</p>
+                    <a href="{{ url_for('donate') }}">Donate Now →</a>
+                </div>
+            {% endif %}
+
+            <div class="feature-card">
+                <div class="icon">📦</div>
+                <h3>Available Donations</h3>
+                <p>Explore food donations and their availability status.</p>
+                <a href="{{ url_for('donations') }}">View Donations →</a>
+            </div>
+
+            <div class="feature-card">
+                <div class="icon">🤖</div>
+                <h3>Smart Matching</h3>
+                <p>Find suitable food donation matches using the matching system.</p>
+                <a href="{{ url_for('smart_matching') }}">Find Matches →</a>
+            </div>
+
+            {% if session.get('user_id') and session.get('user_role') == 'ngo' %}
+                <div class="feature-card">
+                    <div class="icon">🏢</div>
+                    <h3>NGO Dashboard</h3>
+                    <p>View donation statistics and track food distribution activity.</p>
+                    <a href="{{ url_for('ngo_dashboard') }}">Open Dashboard →</a>
+                </div>
+            {% endif %}
+
+        </div>
+    </section>
+
+    <!-- RECENT DONATIONS -->
+    <section class="section">
+
+        <div class="section-heading">
+            <h2>Recent Donations</h2>
+            <p>Food shared by our community.</p>
+        </div>
+
+        <div class="recent-list">
+
+            {% for donation in donations[:3] %}
+
+                <div class="recent-card">
+                    <h3>🍱 {{ donation.food_name }}</h3>
+
+                    <p>
+                        <strong>Quantity:</strong>
+                        {{ donation.quantity }}
+                    </p>
+
+                    <p>
+                        <strong>Location:</strong>
+                        {{ donation.location }}
+                    </p>
+
+                    <p>
+                        <strong>Donor:</strong>
+                        {{ donation.donor_name }}
+                    </p>
+
+                    <span class="status">
+                        {{ donation.status }}
+                    </span>
+                </div>
+
+            {% else %}
+
+                <div class="empty-state">
+                    <h3>No donations yet</h3>
+                    <p>Be the first person to share food with your community.</p>
+                </div>
+
+            {% endfor %}
+
+        </div>
+    </section>
+
+    <!-- CALL TO ACTION -->
+    <section class="cta">
+
+        {% if session.get('user_id') %}
+
+            {% if session.get('user_role') == 'ngo' %}
+
+                <h2>Welcome, NGO Partner!</h2>
+                <p>Find available food and help connect it to people in need.</p>
+
+                <a class="btn btn-secondary"
+                   href="{{ url_for('donations') }}">
+                    Explore Available Food
+                </a>
+
+                <a class="btn btn-secondary"
+                   href="{{ url_for('ngo_dashboard') }}">
+                    Open NGO Dashboard
+                </a>
+
+            {% else %}
+
+                <h2>Thank You for Supporting EcoShare AI!</h2>
+                <p>Your contribution can help reduce food waste.</p>
+
+                <a class="btn btn-secondary"
+                   href="{{ url_for('donate') }}">
+                    Donate Food
+                </a>
+
+            {% endif %}
+
+        {% else %}
+
+            <h2>Join the EcoShare AI Community</h2>
+            <p>Create an account and help make surplus food useful.</p>
+
+            <a class="btn btn-secondary"
+               href="{{ url_for('register') }}">
+                Create Account
+            </a>
+
+        {% endif %}
+
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>
+            © 2026 EcoShare AI |
+            Reducing Food Waste, One Donation at a Time 💚
+        </p>
+    </footer>
+
+</body>
+</html>

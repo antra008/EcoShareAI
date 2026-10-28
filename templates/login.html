@@ -1,0 +1,234 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login | EcoShare AI</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #e5f5e9, #f7fbf7);
+            color: #26382b;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 430px;
+            padding: 35px;
+            background: white;
+            border-radius: 18px;
+            box-shadow: 0 12px 35px #174b2815;
+        }
+
+        .logo {
+            text-align: center;
+            color: #238447;
+            font-size: 27px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .logo-icon {
+            font-size: 38px;
+            margin-bottom: 5px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 27px;
+            margin-bottom: 10px;
+            color: #194e2d;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 14px;
+            color: #718075;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            font-size: 14px;
+            margin: 17px 0 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #d7e3d9;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+            background: #fcfefc;
+        }
+
+        input:focus {
+            border-color: #238447;
+            box-shadow: 0 0 0 3px #23844715;
+        }
+
+        .login-button {
+            width: 100%;
+            margin-top: 25px;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background: #238447;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .login-button:hover {
+            background: #176b3c;
+        }
+
+        .message {
+            padding: 12px;
+            margin-bottom: 12px;
+            border-radius: 8px;
+            background: #ffe8e8;
+            color: #a52222;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .message.success {
+            background: #e1f5e6;
+            color: #19713a;
+        }
+
+        .register-text {
+            text-align: center;
+            margin-top: 23px;
+            font-size: 14px;
+            line-height: 1.8;
+            color: #68776c;
+        }
+
+        a {
+            color: #238447;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .security-note {
+            margin-top: 22px;
+            padding: 12px;
+            border-radius: 8px;
+            background: #f1f8f2;
+            color: #627466;
+            text-align: center;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 25px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="login-card">
+
+    <div class="logo">
+        <div class="logo-icon">🌱</div>
+        EcoShare AI
+    </div>
+
+    <h1>Welcome Back!</h1>
+
+    <p class="subtitle">
+        Login to continue your food-sharing journey.
+    </p>
+
+    <!-- Success and error messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <div class="message {{ category }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endwith %}
+
+    <!-- Login form -->
+    <form method="POST" action="{{ url_for('login') }}">
+
+        <label for="email">Email Address</label>
+
+        <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Enter your registered email"
+            autocomplete="email"
+            required
+        >
+
+        <label for="password">Password</label>
+
+        <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Enter your password"
+            autocomplete="current-password"
+            required
+        >
+
+        <button type="submit" class="login-button">
+            Login to EcoShare AI
+        </button>
+
+    </form>
+
+    <div class="register-text">
+        Don't have an account?
+        <a href="{{ url_for('register') }}">Create Account</a>
+    </div>
+
+    <a class="back-link" href="{{ url_for('home') }}">
+        ← Back to Home
+    </a>
+
+    <div class="security-note">
+        🔒 Your password is stored as a secure hash in the database.
+    </div>
+
+</div>
+
+</body>
+</html>

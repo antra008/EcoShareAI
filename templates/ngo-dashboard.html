@@ -1,0 +1,374 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NGO Dashboard | EcoShare AI</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f8f5;
+            color: #24352b;
+        }
+
+        header {
+            background: #176b45;
+            color: white;
+            padding: 18px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        header h2 {
+            font-size: 25px;
+        }
+
+        nav {
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 35px auto;
+        }
+
+        .welcome {
+            margin-bottom: 25px;
+        }
+
+        .welcome h1 {
+            color: #176b45;
+            margin-bottom: 8px;
+        }
+
+        .welcome p {
+            color: #647268;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 35px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+            border-left: 5px solid #23945f;
+        }
+
+        .stat-card p {
+            color: #647268;
+            margin-bottom: 12px;
+        }
+
+        .stat-card h2 {
+            font-size: 32px;
+            color: #176b45;
+        }
+
+        .section-title {
+            margin-bottom: 18px;
+            color: #176b45;
+        }
+
+        .table-wrapper {
+            background: white;
+            border-radius: 12px;
+            overflow-x: auto;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 700px;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e7eee9;
+        }
+
+        th {
+            background: #e4f3e9;
+            color: #176b45;
+        }
+
+        tr:hover {
+            background: #f8fcf9;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .available {
+            background: #d8f5df;
+            color: #176b45;
+        }
+
+        .claimed {
+            background: #e7e7e7;
+            color: #555;
+        }
+
+        .claim-btn {
+            background: #176b45;
+            color: white;
+            border: none;
+            padding: 9px 13px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .claim-btn:hover {
+            background: #105336;
+        }
+
+        .disabled-btn {
+            background: #a8b5ad;
+            color: white;
+            padding: 9px 13px;
+            border-radius: 6px;
+            display: inline-block;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 35px;
+            color: #647268;
+        }
+
+        .actions {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 25px;
+        }
+
+        .action-link {
+            display: inline-block;
+            background: #176b45;
+            color: white;
+            text-decoration: none;
+            padding: 12px 18px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .action-link.secondary {
+            background: #e0efe5;
+            color: #176b45;
+        }
+
+        .message {
+            padding: 12px 16px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            background: #e0efe5;
+            color: #176b45;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #647268;
+            margin-top: 35px;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .container {
+                width: 94%;
+                margin-top: 25px;
+            }
+
+            .stat-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h2>🌱 EcoShare AI</h2>
+
+    <nav>
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('donations') }}">Available Food</a>
+        <a href="{{ url_for('smart_matching') }}">Smart Matching</a>
+        <a href="{{ url_for('ngo_dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </nav>
+</header>
+
+<main class="container">
+
+    <section class="welcome">
+        <h1>NGO Dashboard</h1>
+        <p>
+            Welcome, {{ session.get('user_name', 'NGO Partner') }}!
+            Manage available food donations and help reduce food waste.
+        </p>
+    </section>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <div class="message">{{ message }}</div>
+        {% endfor %}
+    {% endwith %}
+
+    <section class="stats">
+
+        <div class="stat-card">
+            <p>Total Donations</p>
+            <h2>{{ total_donations }}</h2>
+        </div>
+
+        <div class="stat-card">
+            <p>Available Food</p>
+            <h2>{{ available_donations }}</h2>
+        </div>
+
+        <div class="stat-card">
+            <p>Claimed Donations</p>
+            <h2>{{ claimed_donations }}</h2>
+        </div>
+
+    </section>
+
+    <section>
+        <h2 class="section-title">Food Donation Records</h2>
+
+        <div class="table-wrapper">
+            {% if donations %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Food Name</th>
+                            <th>Quantity</th>
+                            <th>Location</th>
+                            <th>Donor</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for donation in donations %}
+                            <tr>
+                                <td>{{ donation['id'] }}</td>
+                                <td>{{ donation['food_name'] }}</td>
+                                <td>{{ donation['quantity'] }}</td>
+                                <td>{{ donation['location'] }}</td>
+                                <td>{{ donation['donor_name'] }}</td>
+
+                                <td>
+                                    {% if donation['status'] == 'Available' %}
+                                        <span class="status available">
+                                            Available
+                                        </span>
+                                    {% else %}
+                                        <span class="status claimed">
+                                            {{ donation['status'] }}
+                                        </span>
+                                    {% endif %}
+                                </td>
+
+                                <td>
+                                    {% if donation['status'] == 'Available' %}
+                                        <form
+                                            method="POST"
+                                            action="{{ url_for('claim_donation_route', donation_id=donation['id']) }}"
+                                            onsubmit="return confirm('Do you want to claim this donation?');"
+                                        >
+                                            <button
+                                                type="submit"
+                                                class="claim-btn"
+                                            >
+                                                Claim Food
+                                            </button>
+                                        </form>
+                                    {% else %}
+                                        <span class="disabled-btn">
+                                            Already Claimed
+                                        </span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <div class="empty">
+                    <h3>No donations available yet</h3>
+                    <p>Food donations will appear here when they are added.</p>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+
+    <section class="actions">
+        <a class="action-link" href="{{ url_for('donations') }}">
+            View Available Food
+        </a>
+
+        <a class="action-link secondary"
+           href="{{ url_for('smart_matching') }}">
+            Open Smart Matching
+        </a>
+
+        <a class="action-link secondary" href="{{ url_for('home') }}">
+            Back to Home
+        </a>
+    </section>
+
+</main>
+
+<footer>
+    <p>EcoShare AI — Reducing Food Waste, Sharing Hope 🌿</p>
+</footer>
+
+</body>
+</html>

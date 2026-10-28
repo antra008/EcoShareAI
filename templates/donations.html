@@ -1,0 +1,426 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Available Food Donations | EcoShare AI</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f8f5;
+            color: #24382b;
+        }
+
+        .navbar {
+            background: #176b3c;
+            color: white;
+            padding: 18px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .navbar h2 {
+            margin: 0;
+            font-size: 22px;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin-left: 16px;
+            font-weight: bold;
+        }
+
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .page-heading {
+            margin-bottom: 25px;
+        }
+
+        .page-heading h1 {
+            color: #176b3c;
+            margin-bottom: 8px;
+        }
+
+        .page-heading p {
+            color: #607064;
+            line-height: 1.6;
+        }
+
+        .flash-message {
+            padding: 14px 16px;
+            margin: 12px 0;
+            border-radius: 8px;
+            line-height: 1.5;
+        }
+
+        .flash-success {
+            background: #e1f7e8;
+            color: #176b3c;
+            border: 1px solid #b6e4c4;
+        }
+
+        .flash-error {
+            background: #fff0ef;
+            color: #a12622;
+            border: 1px solid #f0c4c1;
+        }
+
+        .donations-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .donation-card {
+            background: white;
+            border: 1px solid #dce8df;
+            border-radius: 14px;
+            padding: 22px;
+            box-shadow: 0 4px 14px rgba(20, 70, 40, 0.05);
+        }
+
+        .donation-card h2 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #176b3c;
+            overflow-wrap: anywhere;
+        }
+
+        .donation-detail {
+            margin: 10px 0;
+            line-height: 1.5;
+            overflow-wrap: anywhere;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 6px 11px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .status-available {
+            color: #176b3c;
+            background: #e1f7e8;
+        }
+
+        .status-claimed {
+            color: #555;
+            background: #eeeeee;
+        }
+
+        .status-expired {
+            color: #a12622;
+            background: #fff0ef;
+        }
+
+        .expiry-note {
+            margin-top: 15px;
+            padding: 11px;
+            background: #f6faf7;
+            border-radius: 8px;
+            line-height: 1.5;
+            overflow-wrap: anywhere;
+        }
+
+        .expiry-warning {
+            color: #a45b00;
+            font-weight: bold;
+        }
+
+        .expiry-danger {
+            color: #b42318;
+            font-weight: bold;
+        }
+
+        .claim-button {
+            width: 100%;
+            margin-top: 16px;
+            padding: 13px;
+            border: none;
+            border-radius: 8px;
+            background: #16834a;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .claim-button:hover {
+            background: #105f35;
+        }
+
+        .empty-state {
+            padding: 30px;
+            background: white;
+            border: 1px dashed #b8cdbd;
+            border-radius: 12px;
+            text-align: center;
+            line-height: 1.7;
+        }
+
+        .action-links {
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+            margin: 28px 0;
+        }
+
+        .action-links a {
+            color: #176b3c;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .action-links a:hover {
+            text-decoration: underline;
+        }
+
+        .safety-note {
+            margin-top: 25px;
+            padding: 15px;
+            border-left: 4px solid #d89b28;
+            background: #fff9e9;
+            border-radius: 7px;
+            line-height: 1.6;
+            color: #674b14;
+        }
+
+        @media (max-width: 700px) {
+            .donations-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .navbar {
+                padding: 16px 5%;
+            }
+
+            .navbar a {
+                margin-left: 0;
+                margin-right: 12px;
+            }
+
+            .container {
+                margin-top: 24px;
+                padding: 0 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="navbar">
+    <h2>🌱 EcoShare AI</h2>
+
+    <nav>
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('donate') }}">Donate Food</a>
+        <a href="{{ url_for('smart_matching') }}">Smart Matching</a>
+        <a href="{{ url_for('ngo_dashboard') }}">NGO Dashboard</a>
+    </nav>
+</header>
+
+<main class="container">
+
+    <section class="page-heading">
+        <h1>🍱 Available Food Donations</h1>
+        <p>
+            Explore food donations, check their details and claim
+            available donations when appropriate.
+        </p>
+    </section>
+
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash-message
+                    {% if category == 'success' %}
+                        flash-success
+                    {% else %}
+                        flash-error
+                    {% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    {% if donations %}
+
+        <div class="donations-grid">
+
+            {% for donation in donations %}
+
+                {% set expiry = donation.get('expiry_date') %}
+                {% set status = donation.get('status', 'Available') %}
+                {% set is_expired = false %}
+
+                {% if expiry and today_date is defined %}
+                    {% if expiry < today_date %}
+                        {% set is_expired = true %}
+                    {% endif %}
+                {% endif %}
+
+                <article class="donation-card">
+
+                    <h2>🥗 {{ donation.food_name }}</h2>
+
+                    <p class="donation-detail">
+                        <strong>Quantity:</strong>
+                        {{ donation.quantity }}
+                    </p>
+
+                    <p class="donation-detail">
+                        <strong>📍 Location:</strong>
+                        {{ donation.location }}
+                    </p>
+
+                    <p class="donation-detail">
+                        <strong>Donor:</strong>
+                        {{ donation.donor_name }}
+                    </p>
+
+                    <p class="donation-detail">
+                        <strong>Donation ID:</strong>
+                        #{{ donation.id }}
+                    </p>
+
+                    <p class="donation-detail">
+                        <strong>Status:</strong>
+
+                        {% if status|lower == 'claimed' %}
+                            <span class="status status-claimed">
+                                Claimed
+                            </span>
+                        {% elif is_expired %}
+                            <span class="status status-expired">
+                                Past entered expiry date
+                            </span>
+                        {% else %}
+                            <span class="status status-available">
+                                {{ status }}
+                            </span>
+                        {% endif %}
+                    </p>
+
+                    <div class="expiry-note">
+                        <strong>📅 Expiry date:</strong>
+
+                        {% if expiry %}
+                            {{ expiry }}
+
+                            {% if is_expired %}
+                                <p class="expiry-danger">
+                                    This donation is past its entered
+                                    expiry date. Do not distribute it.
+                                </p>
+                            {% elif expiry == today_date %}
+                                <p class="expiry-warning">
+                                    Entered expiry date is today.
+                                    Check food condition carefully.
+                                </p>
+                            {% else %}
+                                <p>Entered expiry date has not passed.</p>
+                            {% endif %}
+
+                        {% else %}
+                            <p class="expiry-warning">
+                                Expiry date not provided.
+                            </p>
+                        {% endif %}
+                    </div>
+
+                    {% if status|lower == 'available' and not is_expired %}
+
+                        <form method="POST"
+                              action="{{ url_for(
+                                  'claim_donation_route',
+                                  donation_id=donation.id
+                              ) }}">
+
+                            <button class="claim-button" type="submit">
+                                🤝 Claim Donation
+                            </button>
+
+                        </form>
+
+                    {% elif status|lower == 'claimed' %}
+
+                        <p>
+                            <strong>This donation has already been claimed.</strong>
+                        </p>
+
+                    {% else %}
+
+                        <p class="expiry-danger">
+                            This donation cannot be claimed because its
+                            entered expiry date has passed.
+                        </p>
+
+                    {% endif %}
+
+                </article>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <section class="empty-state">
+            <h2>No donations yet</h2>
+            <p>
+                There are currently no food donations to display.
+                You can add one using the Donate Food page.
+            </p>
+
+            <a href="{{ url_for('donate') }}">
+                Donate Food
+            </a>
+        </section>
+
+    {% endif %}
+
+    <div class="safety-note">
+        <strong>Food safety reminder:</strong>
+        The expiry date is entered by the donor. It does not verify
+        food quality, storage conditions or safety. Check food condition
+        before redistribution.
+    </div>
+
+    <div class="action-links">
+        <a href="{{ url_for('home') }}">← Back to Home</a>
+        <a href="{{ url_for('smart_matching') }}">🤖 Smart Matching</a>
+        <a href="{{ url_for('ngo_dashboard') }}">📊 NGO Dashboard</a>
+    </div>
+
+</main>
+
+</body>
+</html>
